@@ -17,20 +17,20 @@ import {
   del,
   requestBody,
 } from '@loopback/rest';
-import {Contact} from '../models';
-import {ContactRepository} from '../repositories';
+import { Contact } from '../models';
+import { ContactRepository } from '../repositories';
 
 export class ContactController {
   constructor(
     @repository(ContactRepository)
-    public contactRepository : ContactRepository,
-  ) {}
+    public contactRepository: ContactRepository,
+  ) { }
 
   @post('/contacts', {
     responses: {
       '200': {
         description: 'Contact model instance',
-        content: {'application/json': {schema: getModelSchemaRef(Contact)}},
+        content: { 'application/json': { schema: getModelSchemaRef(Contact) } },
       },
     },
   })
@@ -40,7 +40,6 @@ export class ContactController {
         'application/json': {
           schema: getModelSchemaRef(Contact, {
             title: 'NewContact',
-            exclude: ['id'],
           }),
         },
       },
@@ -54,7 +53,7 @@ export class ContactController {
     responses: {
       '200': {
         description: 'Contact model count',
-        content: {'application/json': {schema: CountSchema}},
+        content: { 'application/json': { schema: CountSchema } },
       },
     },
   })
@@ -70,7 +69,7 @@ export class ContactController {
         description: 'Array of Contact model instances',
         content: {
           'application/json': {
-            schema: {type: 'array', items: getModelSchemaRef(Contact)},
+            schema: { type: 'array', items: getModelSchemaRef(Contact) },
           },
         },
       },
@@ -86,7 +85,7 @@ export class ContactController {
     responses: {
       '200': {
         description: 'Contact PATCH success count',
-        content: {'application/json': {schema: CountSchema}},
+        content: { 'application/json': { schema: CountSchema } },
       },
     },
   })
@@ -94,7 +93,7 @@ export class ContactController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Contact, {partial: true}),
+          schema: getModelSchemaRef(Contact, { partial: true }),
         },
       },
     })
@@ -108,7 +107,7 @@ export class ContactController {
     responses: {
       '200': {
         description: 'Contact model instance',
-        content: {'application/json': {schema: getModelSchemaRef(Contact)}},
+        content: { 'application/json': { schema: getModelSchemaRef(Contact) } },
       },
     },
   })
@@ -128,7 +127,7 @@ export class ContactController {
     @requestBody({
       content: {
         'application/json': {
-          schema: getModelSchemaRef(Contact, {partial: true}),
+          schema: getModelSchemaRef(Contact, { partial: true }),
         },
       },
     })

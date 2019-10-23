@@ -1,12 +1,11 @@
-import {Entity, model, property} from '@loopback/repository';
+import { Entity, model, property, belongsTo } from '@loopback/repository';
+import { User } from './user.model';
 
 @model()
 export class Contact extends Entity {
   @property({
     type: 'string',
     id: true,
-    required: true,
-    generated: true,
   })
   id: string;
 
@@ -33,6 +32,10 @@ export class Contact extends Entity {
   })
   image?: string;
 
+  @property({
+    type: 'string',
+  })
+  userId: string;
 
   constructor(data?: Partial<Contact>) {
     super(data);

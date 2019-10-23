@@ -1,12 +1,11 @@
-import {Entity, model, property} from '@loopback/repository';
+import { Entity, model, property, hasMany } from '@loopback/repository';
+import { Contact } from './contact.model';
 
 @model()
 export class User extends Entity {
   @property({
     type: 'string',
     id: true,
-    required: true,
-    generated: true,
   })
   id: string;
 
@@ -34,6 +33,8 @@ export class User extends Entity {
   })
   password: string;
 
+  @hasMany(() => Contact, { keyTo: 'userId' })
+  contacts?: Contact[];
 
   constructor(data?: Partial<User>) {
     super(data);
