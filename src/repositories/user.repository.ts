@@ -35,4 +35,8 @@ export class UserRepository extends DefaultCrudRepository<
       getContactRepository,
     );
   }
+
+  // public findByEmail(email:string){
+  //   Contact.fi
+  // }
 }

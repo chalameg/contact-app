@@ -16,6 +16,7 @@ import {
   put,
   del,
   requestBody,
+  RestBindings,
 } from '@loopback/rest';
 import { User } from '../models';
 import { UserRepository, Credentials } from '../repositories';
@@ -26,6 +27,7 @@ import { PasswordHasher } from '../services/hash.password.bcryptjs';
 import { validateCredentials } from '../services/validator';
 import * as _ from 'lodash';
 import { CredentialsRequestBody } from './specs/user-controller.specs';
+import multer = require('multer');
 
 export class UserController {
   constructor(
@@ -60,7 +62,7 @@ export class UserController {
   })
   async login(
     @requestBody(CredentialsRequestBody) credentials: Credentials,
-  ): Promise<{ token: string }> {
+  ): Promise<{ token_userId: String[] }> {
     // ensure the user exists, and the password is correct
     const user = await this.userService.verifyCredentials(credentials);
 
@@ -70,7 +72,10 @@ export class UserController {
     // create a JSON Web Token based on the user profile
     const token = await this.jwtService.generateToken(userProfile);
 
-    return { token };
+    const userId: string = user.id
+
+    const token_userId: string[] = [token, userId]
+    return { token_userId };
   }
 
 
@@ -208,4 +213,45 @@ export class UserController {
   async deleteById(@param.path.string('id') id: string): Promise<void> {
     await this.userRepository.deleteById(id);
   }
+  // @post('/show-body', {
+  //   responses: {
+  //     200: {
+  //       content: {
+  //         'application/json': {
+  //           schema: {
+  //             type: 'object',
+  //           },
+  //         },
+  //       },
+  //       description: '',
+  //     },
+  //   },
+  // })
+  // async showBody(
+  //   @requestBody({
+  //     description: 'multipart/form-data value.',
+  //     required: true,
+  //     content: {
+  //       'multipart/form-data': {
+  //         // Skip body parsing
+  //         'x-parser': 'stream',
+  //         schema: {type: 'object'},
+  //       },
+  //     },
+  //   })
+  //   request: Request,
+  //   @inject(RestBindings.Http.RESPONSE) response: Response,
+  // ): Promise<Object> {
+  //   const storage = multer.memoryStorage();
+  //   const upload = multer({storage});
+  //   return new Promise<object>((resolve, reject) => {
+  //     upload.any()(request, response, err => {
+  //       if (err) return reject(err);
+  //       resolve({
+  //         files: request.files,
+  //         fields: (request as any).fields,
+  //       });
+  //     });
+  //   });
+  // }
 }
